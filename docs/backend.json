@@ -1,0 +1,406 @@
+{
+  "entities": {
+    "Client": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Client",
+      "type": "object",
+      "description": "Represents a client of Giffoni Advogados Associados.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Client entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the client."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the client."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the client.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the client."
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the client."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email"
+      ]
+    },
+    "Case": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Case",
+      "type": "object",
+      "description": "Represents a legal case handled by Giffoni Advogados Associados.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Case entity."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to Client. (Relationship: Client 1:N Case)"
+        },
+        "caseNumber": {
+          "type": "string",
+          "description": "The case number assigned by the firm."
+        },
+        "title": {
+          "type": "string",
+          "description": "A brief title or description of the case."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the case (e.g., 'Open', 'In Progress', 'Closed')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the case."
+        }
+      },
+      "required": [
+        "id",
+        "clientId",
+        "caseNumber",
+        "title",
+        "status"
+      ]
+    },
+    "Document": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Document",
+      "type": "object",
+      "description": "Represents a legal document associated with a case.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Document entity."
+        },
+        "caseId": {
+          "type": "string",
+          "description": "Reference to Case. (Relationship: Case 1:N Document)"
+        },
+        "fileName": {
+          "type": "string",
+          "description": "The name of the document file."
+        },
+        "fileType": {
+          "type": "string",
+          "description": "The type of the document file (e.g., 'PDF', 'DOCX')."
+        },
+        "uploadDate": {
+          "type": "string",
+          "description": "The date and time when the document was uploaded.",
+          "format": "date-time"
+        },
+        "fileUrl": {
+          "type": "string",
+          "description": "URL of the document",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "caseId",
+        "fileName",
+        "fileType",
+        "uploadDate"
+      ]
+    },
+    "Message": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Message",
+      "type": "object",
+      "description": "Represents a secure message exchanged between a client and the legal team.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Message entity."
+        },
+        "caseId": {
+          "type": "string",
+          "description": "Reference to Case. (Relationship: Case 1:N Message)"
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Reference to either Client or LegalTeamMember, indicating who sent the message."
+        },
+        "senderType": {
+          "type": "string",
+          "description": "Type of the sender (e.g., 'Client', 'LegalTeamMember')."
+        },
+        "messageText": {
+          "type": "string",
+          "description": "The content of the message."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The date and time when the message was sent.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "caseId",
+        "senderId",
+        "senderType",
+        "messageText",
+        "timestamp"
+      ]
+    },
+    "Invoice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Invoice",
+      "type": "object",
+      "description": "Represents an invoice for legal services.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Invoice entity."
+        },
+        "caseId": {
+          "type": "string",
+          "description": "Reference to Case. (Relationship: Case 1:N Invoice)"
+        },
+        "invoiceNumber": {
+          "type": "string",
+          "description": "The invoice number."
+        },
+        "issueDate": {
+          "type": "string",
+          "description": "The date the invoice was issued.",
+          "format": "date-time"
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "The date the invoice is due.",
+          "format": "date-time"
+        },
+        "amount": {
+          "type": "number",
+          "description": "The total amount of the invoice."
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the invoice (e.g., 'Paid', 'Unpaid', 'Overdue')."
+        },
+        "details": {
+          "type": "string",
+          "description": "Details of the invoice"
+        }
+      },
+      "required": [
+        "id",
+        "caseId",
+        "invoiceNumber",
+        "issueDate",
+        "dueDate",
+        "amount",
+        "status"
+      ]
+    },
+    "LegalTeamMember": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LegalTeamMember",
+      "type": "object",
+      "description": "Represents a member of the Giffoni Advogados Associados legal team.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LegalTeamMember entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the legal team member."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the legal team member."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the legal team member.",
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the legal team member (e.g., 'Lawyer', 'Paralegal')."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "role"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}/clients/{clientId}",
+        "definition": {
+          "entityName": "Client",
+          "schema": {
+            "$ref": "#/backend/entities/Client"
+          },
+          "description": "Stores client data. Path-based ownership ensures only the authenticated user (client) and authorized legal team members can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the client."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique identifier for the client document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/clients/{clientId}/cases/{caseId}",
+        "definition": {
+          "entityName": "Case",
+          "schema": {
+            "$ref": "#/backend/entities/Case"
+          },
+          "description": "Stores cases associated with a specific client. Path-based ownership ensures only the client and authorized legal team members can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the client."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique identifier for the client document."
+            },
+            {
+              "name": "caseId",
+              "description": "The unique identifier for the case document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/clients/{clientId}/cases/{caseId}/documents/{documentId}",
+        "definition": {
+          "entityName": "Document",
+          "schema": {
+            "$ref": "#/backend/entities/Document"
+          },
+          "description": "Stores documents related to a specific case. Path-based ownership ensures only the client and authorized legal team members can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the client."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique identifier for the client document."
+            },
+            {
+              "name": "caseId",
+              "description": "The unique identifier for the case document."
+            },
+            {
+              "name": "documentId",
+              "description": "The unique identifier for the document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/clients/{clientId}/cases/{caseId}/messages/{messageId}",
+        "definition": {
+          "entityName": "Message",
+          "schema": {
+            "$ref": "#/backend/entities/Message"
+          },
+          "description": "Stores messages exchanged within a specific case. Path-based ownership ensures only the client and authorized legal team members can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the client."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique identifier for the client document."
+            },
+            {
+              "name": "caseId",
+              "description": "The unique identifier for the case document."
+            },
+            {
+              "name": "messageId",
+              "description": "The unique identifier for the message."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/clients/{clientId}/cases/{caseId}/invoices/{invoiceId}",
+        "definition": {
+          "entityName": "Invoice",
+          "schema": {
+            "$ref": "#/backend/entities/Invoice"
+          },
+          "description": "Stores invoices related to a specific case. Path-based ownership ensures only the client and authorized legal team members can access this data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the client."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique identifier for the client document."
+            },
+            {
+              "name": "caseId",
+              "description": "The unique identifier for the case document."
+            },
+            {
+              "name": "invoiceId",
+              "description": "The unique identifier for the invoice."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/legal_team_members/{legalTeamMemberId}",
+        "definition": {
+          "entityName": "LegalTeamMember",
+          "schema": {
+            "$ref": "#/backend/entities/LegalTeamMember"
+          },
+          "description": "Stores information about legal team members. This is a global collection for managing team member profiles.",
+          "params": [
+            {
+              "name": "legalTeamMemberId",
+              "description": "The unique identifier for the legal team member."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to provide a secure and scalable platform for Giffoni Connect, focusing on clear ownership and authorization independence. The key principle is path-based ownership for user-specific data and membership maps for collaborative data. This approach minimizes the need for `get()` calls in security rules, ensuring atomicity and simplifying debugging. Segregation ensures that each collection has a homogeneous security posture.\n\n**Authorization Independence & QAPs**:\n\n*   **Clients:** Each client's data is stored under `/users/{userId}/clients/{clientId}`. This directly associates the client data with the authenticated user, eliminating the need for complex authorization logic. This enables simple list operations (QAPs) because rules can easily filter based on `request.auth.uid`.\n*   **Cases, Documents, Messages, and Invoices:** These are nested under the client's document using path-based ownership (e.g., `/users/{userId}/clients/{clientId}/cases/{caseId}`). This establishes a clear ownership hierarchy, making security rules straightforward and ensuring that only the client and authorized legal team members can access the data. List operations (QAPs) are secured through the hierarchical structure, ensuring that listing is restricted to the owner of the documents.\n\nThis structure ensures that security rules can be written based on simple checks like `request.auth.uid == userId`, making them robust and easy to understand. The hierarchical structure also aligns well with the 1:N relationships between users and their associated data, enhancing maintainability and scalability."
+  }
+}

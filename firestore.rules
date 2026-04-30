@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- AVISO: Regras de desenvolvimento. As permissões estão abertas. ---
+
+    // Todas as coleções estão abertas para leitura e escrita para
+    // evitar erros de permissão enquanto a autenticação está desabilitada.
+
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

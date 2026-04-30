@@ -1,0 +1,67 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // HELPER FUNCTIONS
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isBoss() {
+      // Authorization is based EXCLUSIVELY on a custom claim in the token.
+      return request.auth.token.boss == true;
+    }
+
+    // This collection is used to trigger the custom claim assignment.
+    // A user can add themselves to this list, which a (simulated) backend function
+    // will process to grant the 'boss' claim. This solves the bootstrap problem.
+    match /boss_admins/{adminId} {
+      allow create: if request.auth.uid == adminId; // Allow a user to register themselves as a boss admin candidate
+      allow read, write: if isBoss(); // Only existing bosses can manage other admins
+    }
+
+    // USER DATA COLLECTIONS
+    match /clients/{clientId}/{document=**} {
+      allow read, write: if request.auth != null && (isBoss() || isOwner(clientId));
+    }
+    
+    match /partners/{partnerId}/{document=**} {
+       allow read, write: if request.auth != null && (isBoss() || isOwner(partnerId));
+    }
+
+    match /collaborators/{collaboratorId}/{document=**} {
+       allow read, write: if request.auth != null && (isBoss() || isOwner(collaboratorId));
+    }
+    
+    // COLLECTIONS MANAGED BY BOSS
+    match /private_leads/{leadId} {
+       allow read, write: if request.auth != null && isBoss();
+    }
+    
+    match /quality_control_hubs/{hubId}/{document=**} {
+      allow read, write: if request.auth != null && isBoss();
+    }
+
+    // PUBLIC AND SEMI-PUBLIC DATA
+    match /team/{memberId} {
+        allow read: if true; 
+        allow write: if request.auth != null && isBoss();
+    }
+    
+    match /meetings/{meetingId} {
+        // Any authenticated user can create meetings. 
+        // More specific rules could check participant IDs.
+        allow read, write: if request.auth != null;
+    }
+    
+    match /practice_areas/{areaId} {
+        allow read: if true;
+        allow write: if request.auth != null && isBoss();
+    }
+
+    match /content_pages/{pageId} {
+        allow read: if true;
+        allow write: if request.auth != null && isBoss();
+    }
+  }
+}
