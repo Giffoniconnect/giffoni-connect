@@ -36,6 +36,7 @@ import {
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import { buildOfficeWhatsAppLink } from '@/lib/whatsapp';
 
 const TikTokIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -93,7 +94,7 @@ export function HomeSidebar() {
     return pathname.startsWith(href);
   };
   
-  const WHATSAPP_LINK = "https://wa.me/5531988639056";
+  const WHATSAPP_LINK = buildOfficeWhatsAppLink();
   const PHONE_LINK = "tel:+5531988639056";
 
   return (
