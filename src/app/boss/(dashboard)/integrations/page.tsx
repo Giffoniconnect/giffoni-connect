@@ -58,7 +58,7 @@ const integrationCards = [
     },
     {
       title: "W.A Speed",
-      description: "Integração para automação de WhatsApp.",
+      description: "Atalhos e mensagens para WhatsApp. Envio automático real depende da API oficial e backend seguro.",
       href: "/integrations/wa-speed",
     },
     {
