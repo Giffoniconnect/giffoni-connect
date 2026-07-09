@@ -58,7 +58,7 @@ const integrationCards = [
     },
     {
       title: "W.A Speed",
-      description: "Atalhos e mensagens para WhatsApp. Envio automático real depende da API oficial e backend seguro.",
+      description: "Automação de envio de mensagens e documentos pelo navegador via W.A Speed/Wascript. Usa o secret Wascript_API configurado e não depende da API oficial do WhatsApp.",
       href: "/integrations/wa-speed",
     },
     {
